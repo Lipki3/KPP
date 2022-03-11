@@ -1,0 +1,59 @@
+plugins {
+    id 'org.springframework.boot' version '2.6.4'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'com.vaadin' version '0.14.6.0'
+    id 'java'
+    id 'org.springframework.experimental.aot' version '0.11.3'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    maven { url 'https://repo.spring.io/release' }
+    mavenCentral()
+}
+
+ext {
+    set('vaadinVersion', "23.0.1")
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+    implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+    implementation 'org.springframework.boot:spring-boot-starter-jersey'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-web-services'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'com.vaadin:vaadin-spring-boot-starter'
+    implementation 'org.springframework.data:spring-data-rest-hal-explorer'
+    implementation 'org.springframework.session:spring-session-core'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "com.vaadin:vaadin-bom:${vaadinVersion}"
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+tasks.named('bootBuildImage') {
+    builder = 'paketobuildpacks/builder:tiny'
+    environment = ['BP_NATIVE_IMAGE': 'true']
+}
