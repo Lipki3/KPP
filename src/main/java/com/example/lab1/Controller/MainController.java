@@ -9,16 +9,16 @@ import java.util.concurrent.atomic.AtomicLong;
 import com.example.lab1.solutions.Calculate;
 import com.example.lab1.exception.CustomException;
 import com.example.lab1.cache.Cache;
-import com.example.lab1.solutions.Parameters;
-import com.example.lab1.solutions.Solution;
-
+import org.springframework.web.bind.annotation.*;
+import com.example.lab1.solutions.Repository;
 
 @RestController
 
 public class MainController {
     private final AtomicLong counter = new AtomicLong();
+    Repository rep = new Repository();
     @GetMapping(value = "/app")
-   // public ResponseEntity<Object> simpleCalculation (@RequestParam(value = "iYear", required = true) int iYear,
+
     public Results simpleCalculation (@RequestParam(value = "iYear", required = true) int iYear,
                                              @RequestParam(value = "iMonth", required = true) int iMonth,
                                              @RequestParam(value = "iDate", required = true) int iDate) throws  CustomException {
@@ -29,10 +29,6 @@ public class MainController {
         if (iDate < 1 || iDate > 31)
             throw new CustomException("ERROR 400, BAD REQUEST, invalid Date...");
 
-       // var solution = new Solution(new Parameters(iYear,iMonth,iDate));
-        //solution.calculateRoot();
-
-        //return new ResponseEntity<>(solution.getRoot(), HttpStatus.OK);
 
         int result = 0;
         result = InputValidation.optionsValidation(iYear, iMonth, iDate);
@@ -43,6 +39,17 @@ public class MainController {
     @GetMapping("/cache")
     public ResponseEntity<String> printCache() {
         return new ResponseEntity<>(Cache.getStaticStringCache(), HttpStatus.OK);
+    }
+
+    @PostMapping("/app")
+    public String Update (
+            @RequestParam(value = "iYear", required = true) int iYear,
+            @RequestParam(value = "iMonth", required = true) int iMonth,
+            @RequestParam(value = "iDate", required = true) int iDate)
+    {
+        Calculate obj = new Calculate(iYear,iMonth,iDate);
+        return rep.addToMap(obj, obj.calculate());
+
     }
 
 
