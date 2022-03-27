@@ -1,17 +1,18 @@
-package com.example.lab1.Controller;
+package com.example.lab1.solutions;
 
-import com.example.lab1.solutions.Parameters;
+public class Calculate {
 
-public record Results(long id, String day) {
-    @Override
-    public long id() {
-        return id;
+    private int iYear;
+    private int iMonth;
+    private int iDate;
+
+    public Calculate(int iYear, int iMonth, int iDate) {
+        this.iYear = iYear;
+        this.iMonth = iMonth;
+        this.iDate = iDate;
     }
 
-    public String day() {
-        return day;
-    }
-    public String calculate(int iDate, int iMonth, int iYear) {
+    public String calculate() {
 
         // Month:  March   -  3 ... December - 12 of Current  Year
         //         January - 13,    February - 14 of Previous Year
@@ -39,7 +40,6 @@ public record Results(long id, String day) {
 
         return "error";
     }
-
-
-
 }
+
+
