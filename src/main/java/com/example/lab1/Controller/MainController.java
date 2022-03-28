@@ -1,5 +1,6 @@
 package com.example.lab1.Controller;
 
+import com.example.lab1.Exceptions.BadRequestException;
 import com.example.lab1.Exceptions.MyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,12 +18,12 @@ public class MainController {
                                              @RequestParam(value = "iMonth", defaultValue = "0") int iMonth,
                                              @RequestParam(value = "iDate", defaultValue = "0") int iDate) throws  MyException {
 
-        if (iYear < 0)
-            throw new MyException("ERROR 400, BAD REQUEST, invalid Year...");
-        if (iMonth < 0)
-            throw new MyException("ERROR 400, BAD REQUEST, invalid Month...");
-        if (iDate < 0)
-            throw new MyException("ERROR 400, BAD REQUEST, invalid Date...");
+        if (iYear < 1900 || iYear >2100)
+            throw new BadRequestException("ERROR 400, BAD REQUEST, invalid Year...");
+        if (iMonth < 0 || iMonth >12)
+            throw new BadRequestException("ERROR 400, BAD REQUEST, invalid Month...");
+        if (iDate < 0 || iDate >31)
+            throw new BadRequestException("ERROR 400, BAD REQUEST, invalid Date...");
 
         var solution = new Solution(new Parameters(iYear,iMonth, iDate));
         solution.calculateRoot();

@@ -29,14 +29,30 @@ public class Solution {
         if (temp != null) {
             Logger.log(Level.WARN, "Value found in cache!");
             setRoot(temp);
-
             return;
         }
 
         // If not found
+        int N1, N2, N3, N4, N5, N6, k;
+        N4 =  parameters.getFirstValue();
+        N5 =  parameters.getSecondValue();
+        N6 =  parameters.getThirdValue();
+      //  temp = parameters.getSecondValue() * parameters.getSecondValue()  * parameters.getFirstValue();
+        if (N5 < 3) {
+            // If January or February, adjust Month and Year
+            N5 += 12;
+            --N4;
+        }
 
-        temp = parameters.getSecondValue() * parameters.getSecondValue()  * parameters.getFirstValue();
-        setRoot(temp);
+        N1 = (26 * (N5 + 1)) / 10;    // Month Shift
+        N2 = (125 * N4) / 100;         // Leap Correction
+
+        N3 = N6 + N1 + N2 - (N4 / 100) + (N4 / 400) - 1;
+
+
+        k = N3 % 7;
+
+        setRoot(k);
         // Adding { inputParams, root } to cache
         Cache.add(parameters, root);
     }
