@@ -47,22 +47,22 @@ public class InputValidation {
 
     public static Results optionsValidation(long id, App a) {
 
-        if ( (isInt(a.iYear()))) {
+        if ( (isInt(a.iYear())) || a.iYear() < 1900 || a.iYear() >2100) {
 
         } else {
-            throw new MyException("BAD REQUEST ERROR 400: Side1 is invalid");
+            throw new MyException("BAD REQUEST ERROR 400: Year is invalid");
         }
 
-        if ( (isInt(a.iMonth()))) {
+        if ( (isInt(a.iMonth())) || a.iMonth() <1 || a.iMonth() >12) {
 
         } else {
-            throw new MyException("BAD REQUEST ERROR 400: Side2 is invalid");
+            throw new MyException("BAD REQUEST ERROR 400: Month is invalid");
         }
 
-        if ((isInt(a.iDate()))) {
+        if ((isInt(a.iDate())) || a.iDate() <1 || a.iDate() >31 ){
 
         } else {
-            throw new MyException("BAD REQUEST ERROR 400: Side3 is invalid");
+            throw new MyException("BAD REQUEST ERROR 400: Date is invalid");
         }
 
        // String result;
