@@ -31,14 +31,6 @@ public class Calculate {
         k = N3 % 7;
         if (k ==0) k = 7;
 
-       // if (k == 1) return "Monday";
-       // if (k == 2) return "Tuesday";
-        //if (k == 3) return "Wednesday";
-      //  if (k == 4) return "Thursday";
-       // if (k == 5) return "Friday";
-       // if (k == 6) return "Saturday";
-     //   if (k == 0) return "Sunday";
-
         return k;
     }
 }

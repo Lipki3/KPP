@@ -1,39 +1,37 @@
 package com.example.lab1.Controller;
-import com.example.lab1.Repository;
 
-import com.example.lab1.App;
-import com.example.lab1.Validations.InputValidation;
-import com.example.lab1.Validations.Validation;
-import org.springframework.web.bind.annotation.*;
-import com.example.lab1.Calculate;
-import java.util.concurrent.atomic.AtomicLong;
-
-
+import com.example.lab1.Exceptions.MyException;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import com.example.lab1.Results.Parameters;
+import com.example.lab1.Results.Solution;
+import com.example.lab1.Cache.cache;
 
 @RestController
-
 public class MainController {
-    private final AtomicLong counter = new AtomicLong();
-    Repository rep = new Repository();
-    @GetMapping("/app")
-    public Results Get (
-            @RequestParam(value = "iYear", required = true, defaultValue = "2022") int iYear,
-            @RequestParam(value = "iMonth", required = true, defaultValue = "3") int iMonth,
-            @RequestParam(value = "iDate", required = true, defaultValue = "28") int iDate)
-    {
-        int result = 0;
-        result = Validation.optionsValidation(iYear, iMonth, iDate);
-        Calculate obj = new Calculate(iYear,iMonth,iDate);
-        return new Results(counter.incrementAndGet(), obj.calculate());
-    }
-    @GetMapping("/cache")
-    public Results Enter (
-            @RequestParam(value = "iYear", required = true) int iYear,
-            @RequestParam(value = "iMonth", required = true) int iMonth,
-            @RequestParam(value = "iDate", required = true) int iDate)
-    {
-        App This = new App(iYear, iMonth, iDate);
-        return rep.addToMap(This,InputValidation.optionsValidation(counter.incrementAndGet(),This));
+    @GetMapping(value = "/app")
+    public ResponseEntity<Object> calculate (@RequestParam(value = "iYear", defaultValue = "0") int iYear,
+                                             @RequestParam(value = "iMonth", defaultValue = "0") int iMonth,
+                                             @RequestParam(value = "iDate", defaultValue = "0") int iDate) throws  MyException {
+
+        if (iYear < 0)
+            throw new MyException("ERROR 400, BAD REQUEST, invalid Year...");
+        if (iMonth < 0)
+            throw new MyException("ERROR 400, BAD REQUEST, invalid Month...");
+        if (iDate < 0)
+            throw new MyException("ERROR 400, BAD REQUEST, invalid Date...");
+
+        var solution = new Solution(new Parameters(iYear,iMonth, iDate));
+        solution.calculateRoot();
+
+        return new ResponseEntity<>(solution.getRoot(), HttpStatus.OK);
     }
 
+    @GetMapping("/cache")
+    public ResponseEntity<String> printCache() {
+        return new ResponseEntity<>(cache.getStaticStringCache(), HttpStatus.OK);
+    }
 }

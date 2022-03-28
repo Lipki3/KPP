@@ -1,5 +1,6 @@
 package com.example.lab1;
 
+
 import org.springframework.stereotype.Component;
 import com.example.lab1.Controller.Results;
 import java.util.HashMap;

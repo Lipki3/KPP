@@ -65,7 +65,7 @@ public class InputValidation {
             throw new MyException("BAD REQUEST ERROR 400: Date is invalid");
         }
 
-       // String result;
+        // String result;
         int N1, N2, N3, k;
         if (a.iMonth() < 3) {
             // If January or February, adjust Month and Year
@@ -79,21 +79,21 @@ public class InputValidation {
             k = N3 % 7;
         } else {
 
-        N1 = (26 * (a.iMonth() + 1)) / 10;    // Month Shift
-        N2 = (125 * a.iYear() / 100);         // Leap Correction
+            N1 = (26 * (a.iMonth() + 1)) / 10;    // Month Shift
+            N2 = (125 * a.iYear() / 100);         // Leap Correction
 
-        N3 = a.iDate() + N1 + N2 - (a.iYear() / 100) + (a.iYear() / 400) - 1;
+            N3 = a.iDate() + N1 + N2 - (a.iYear() / 100) + (a.iYear() / 400) - 1;
 
-        k = 0;
-        k = N3 % 7;
+            k = 0;
+            k = N3 % 7;
         }
-      //  if (k == 1) result = "Monday";
+        //  if (k == 1) result = "Monday";
         //f (k == 2) result =  "Tuesday";
-      //  if (k == 3) result =  "Wednesday";
-      //  if (k == 4) result =  "Thursday";
-      //  if (k == 5) result =  "Friday";
-       // if (k == 6) result =  "Saturday";
-      //  if (k == 0) result =  "Sunday";
+        //  if (k == 3) result =  "Wednesday";
+        //  if (k == 4) result =  "Thursday";
+        //  if (k == 5) result =  "Friday";
+        // if (k == 6) result =  "Saturday";
+        //  if (k == 0) result =  "Sunday";
 
         return new Results(id,k);
     }
