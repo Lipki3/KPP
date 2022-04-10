@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class MainController {
 
     private final AtomicLong counter = new AtomicLong();
-    private final AtomicLong num = new AtomicLong();
+    RequestCounterController NumberOfRequests = new RequestCounterController();
     Repository rep = new Repository();
     @GetMapping("/app")
     public Results Enter (
@@ -27,8 +27,9 @@ public class MainController {
             @RequestParam(value = "month", required = true, defaultValue = "4") int iMonth,
             @RequestParam(value = "date", required = true, defaultValue = "5") int iDate)
     {
-        num.incrementAndGet();
+        NumberOfRequests.IncremetNumber();
         App ThisDay = new App(iYear, iMonth, iDate);
+        Logger.log(Level.INFO,  "Successfully getMapping");
         if(rep.isContain(ThisDay)) {
             var b = new Solution(ThisDay);
             b.calculateRoot();
