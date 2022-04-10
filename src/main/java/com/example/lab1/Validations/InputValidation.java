@@ -5,36 +5,19 @@ import com.example.lab1.App;
 import com.example.lab1.Controller.Results;
 public class InputValidation {
 
-
-
-    public static boolean isInt(int s) {
-        try {
-            if (s > 0) return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-        return false;
-    }
-
     public static Results optionsValidation(long id, App a) {
 
-        if ( (isInt(a.iYear())) || a.iYear() < 1900 || a.iYear() >2100) {
-
-        } else {
+        if (a.iYear() < 1900 || a.iYear() >2100)
             throw new MyException("BAD REQUEST ERROR 400: Year is invalid");
-        }
 
-        if ( (isInt(a.iMonth())) || a.iMonth() <1 || a.iMonth() >12) {
 
-        } else {
+        if (a.iMonth() <1 || a.iMonth() >12)
             throw new MyException("BAD REQUEST ERROR 400: Month is invalid");
-        }
 
-        if ((isInt(a.iDate())) || a.iDate() <1 || a.iDate() >31 ){
 
-        } else {
+        if (a.iDate() <1 || a.iDate() >31 )
             throw new MyException("BAD REQUEST ERROR 400: Date is invalid");
-        }
+
 
         String result = "error";
         int N1, N2, N3, k;
