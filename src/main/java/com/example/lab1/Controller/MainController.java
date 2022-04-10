@@ -42,7 +42,7 @@ public class MainController {
             return rep.addToMap(ThisDay,InputValidation.optionsValidation(counter.incrementAndGet(),ThisDay));
         }
     }
-    
+
 
     @GetMapping("/cache")
     public ResponseEntity<String> printCache() {
