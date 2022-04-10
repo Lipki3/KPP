@@ -32,13 +32,13 @@ public class MainController {
         if(rep.isContain(ThisDay)) {
             var b = new Solution(ThisDay);
             b.calculateRoot();
-            Logger.log(Level.INFO,  "This Triangle is already in the cache");
+            Logger.log(Level.INFO,  "This date is already in the cache");
             return rep.getParameters(ThisDay);
         }
         else {
             var b = new Solution(ThisDay);
             b.calculateRoot();
-            Logger.log(Level.INFO,  "This Triangle is added in the cache");
+            Logger.log(Level.INFO,  "This date is added in the cache");
             return rep.addToMap(ThisDay,InputValidation.optionsValidation(counter.incrementAndGet(),ThisDay));
         }
     }
