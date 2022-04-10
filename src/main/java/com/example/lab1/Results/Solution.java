@@ -2,6 +2,7 @@ package com.example.lab1.Results;
 
 import com.example.lab1.SpringConfig;
 import com.example.lab1.Cache.cache;
+import com.example.lab1.App;
 import com.example.lab1.logger.Logger;
 import org.apache.logging.log4j.Level;
 import org.jetbrains.annotations.Nullable;
@@ -11,11 +12,11 @@ public class Solution {
 
     private final cache Cache;
 
-    private final Parameters parameters;
+    private final App parameters;
 
     private Integer root;
 
-    public Solution(Parameters params) {
+    public Solution(App params) {
         var context = new AnnotationConfigApplicationContext(SpringConfig.class);
         Cache = context.getBean("cache", cache.class);
         context.close();
@@ -55,10 +56,6 @@ public class Solution {
         setRoot(k);
         // Adding { inputParams, root } to cache
         Cache.add(parameters, root);
-    }
-
-    public Integer getRoot() {
-        return root;
     }
 
     public void setRoot(@Nullable Integer root) {
