@@ -12,8 +12,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
+
 
 @RestController
 public class MainController {
@@ -48,5 +53,21 @@ public class MainController {
     @GetMapping("/cache")
     public ResponseEntity<String> printCache() {
         return new ResponseEntity<>(cache.getStaticStringCache(), HttpStatus.OK);
+    }
+
+    @PostMapping("/stream")
+    public List<Results> EnterStream(@Valid @RequestBody List<App> bodyList){
+
+        NumberOfRequests.IncremetNumber();
+        List<Results> resultList = new LinkedList<>();
+        bodyList.forEach((currentElement) -> {
+            try {
+                resultList.add(InputValidation.optionsValidation(counter.incrementAndGet(),currentElement));
+            } catch (IllegalArgumentException e) {
+                Logger.log(Level.INFO,  "Error postMapping");
+            }
+        });
+        Logger.log(Level.INFO,  "Successfully postMapping");
+        return resultList;
     }
 }
