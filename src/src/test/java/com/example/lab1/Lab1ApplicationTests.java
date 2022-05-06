@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-class Lab1ApplicationTests {
+class Lab1ApplicationTests  {
     private final MainController test = new MainController();
 
     @Test
