@@ -2,7 +2,7 @@ package com.example.lab1.Validations;
 
 import com.example.lab1.Exceptions.MyException;
 import com.example.lab1.App;
-import com.example.lab1.Controller.Results;
+
 public class InputValidation {
 
     public static Results optionsValidation(long id, App a) {

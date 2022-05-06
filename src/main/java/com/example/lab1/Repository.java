@@ -2,7 +2,7 @@ package com.example.lab1;
 
 
 import org.springframework.stereotype.Component;
-import com.example.lab1.Controller.Results;
+import com.example.lab1.Validations.Results;
 import java.util.HashMap;
 
 @Component

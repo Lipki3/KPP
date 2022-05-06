@@ -1,5 +1,6 @@
 package com.example.lab1.Controller;
 
+import com.example.lab1.Validations.Results;
 import com.example.lab1.logger.Logger;
 import com.example.lab1.Repository;
 import com.example.lab1.Cache.cache;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
-import java.util.ArrayList;
+import com.example.lab1.Stats.Statistics;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -56,7 +57,7 @@ public class MainController {
     }
 
     @PostMapping("/stream")
-    public List<Results> EnterStream(@Valid @RequestBody List<App> bodyList){
+    public ResponseEntity<?> EnterStream(@Valid @RequestBody List<App> bodyList){
 
         NumberOfRequests.IncremetNumber();
         List<Results> resultList = new LinkedList<>();
@@ -67,7 +68,12 @@ public class MainController {
                 Logger.log(Level.INFO,  "Error postMapping");
             }
         });
+
         Logger.log(Level.INFO,  "Successfully postMapping");
-        return resultList;
+        double Mondays = Statistics.findMondays(resultList);
+        double Sundays = Statistics.findSundays(resultList);
+        return new ResponseEntity<>(resultList  + "\nMondays: " +
+                Mondays + "\nSundays: " + Sundays, HttpStatus.OK);
+
     }
 }
