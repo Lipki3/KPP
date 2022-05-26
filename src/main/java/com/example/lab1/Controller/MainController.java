@@ -9,6 +9,7 @@ import com.example.lab1.Results.Solution;
 import com.example.lab1.Validations.InputValidation;
 import org.apache.logging.log4j.Level;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -56,24 +57,10 @@ public class MainController {
         return new ResponseEntity<>(cache.getStaticStringCache(), HttpStatus.OK);
     }
 
-    @PostMapping("/stream")
-    public ResponseEntity<?> EnterStream(@Valid @RequestBody List<App> bodyList){
 
-        NumberOfRequests.IncremetNumber();
-        List<Results> resultList = new LinkedList<>();
-        bodyList.forEach((currentElement) -> {
-            try {
-                resultList.add(InputValidation.optionsValidation(counter.incrementAndGet(),currentElement));
-            } catch (IllegalArgumentException e) {
-                Logger.log(Level.INFO,  "Error postMapping");
-            }
-        });
-
-        Logger.log(Level.INFO,  "Successfully postMapping");
-        double Mondays = Statistics.findMondays(resultList);
-        double Sundays = Statistics.findSundays(resultList);
-        return new ResponseEntity<>(resultList  + "\nMondays: " +
-                Mondays + "\nSundays: " + Sundays, HttpStatus.OK);
-
+    @PostMapping(value = "/post", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity alternativeCalculation(@RequestBody int[] array) {
+        return new ResponseEntity<>(Statistics.post(array), HttpStatus.OK);
     }
+
 }
