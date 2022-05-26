@@ -1,11 +1,13 @@
 package com.example.lab1.Stats;
 
+import com.example.lab1.DataClass;
 import com.example.lab1.Validations.Results;
 
 import java.util.List;
 
 public class Statistics {
-
+    public int stats;
+    public Statistics() {};
     static public String post(int[] arr){
         int iYear = arr[0];
         int iMonth = arr[1];
@@ -42,4 +44,30 @@ public class Statistics {
 
         return result;
     }
+
+
+    static public int findDecember(List<DataClass> resultList) {
+        int december = 0;
+        for (int i = 0; i<10;) {
+            if(resultList.get(i).getMonth() == 12)
+            {
+              december++;
+            }
+            i++;
+        }
+        return december;
+    }
+
+    static public int findJanuary(List<DataClass> resultList) {
+        int january = 0;
+        for (int i = 0; i<10;) {
+            if(resultList.get(i).getMonth() == 1)
+            {
+                january++;
+            }
+            i++;
+        }
+        return january;
+    }
+
 }

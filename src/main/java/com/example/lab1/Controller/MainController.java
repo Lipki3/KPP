@@ -3,11 +3,13 @@ package com.example.lab1.Controller;
 import com.example.lab1.Validations.Results;
 import com.example.lab1.logger.Logger;
 import com.example.lab1.Repository;
+import com.example.lab1.DataClass;
 import com.example.lab1.Cache.cache;
 import com.example.lab1.App;
 import com.example.lab1.Results.Solution;
 import com.example.lab1.Validations.InputValidation;
 import org.apache.logging.log4j.Level;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import com.example.lab1.Stats.Statistics;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -61,6 +65,20 @@ public class MainController {
     @PostMapping(value = "/post", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity alternativeCalculation(@RequestBody int[] array) {
         return new ResponseEntity<>(Statistics.post(array), HttpStatus.OK);
+    }
+
+
+    private static final String template = "January: %d,  December: %d";
+
+    @PostMapping("/stats")
+    public ResponseEntity<?> EnterStream(@Valid @RequestBody List<DataClass> bodyList){
+        Statistics st = new Statistics();
+        List<String> res_output = new ArrayList<>();
+        NumberOfRequests.IncremetNumber();
+
+        res_output.add(String.format(template, st.findJanuary(bodyList), st.findDecember(bodyList)));
+
+        return new ResponseEntity<>(res_output, HttpStatus.OK);
     }
 
 }
