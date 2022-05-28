@@ -75,7 +75,8 @@ public class MainController {
         Statistics st = new Statistics();
         List<String> res_output = new ArrayList<>();
         NumberOfRequests.IncremetNumber();
-        int[] days = {0,0,0,0,0,0,0}; String popular = ""; int max = 0; AtomicInteger incorrectdate = new AtomicInteger();
+        int[] days = {0,0,0,0,0,0,0}; int[] mindate = {0,0,2500}, maxdate = {0,0,0};
+        String popular = ""; int max = 0; AtomicInteger incorrectdate = new AtomicInteger();
          //res_output.add(String.format(template, st.findJanuary(bodyList), st.findDecember(bodyList)));
         bodyList.forEach((element)->{
             if (element.getYear() < 1900 || element.getYear() > 2100 || element.getMonth()>12 ||
@@ -84,6 +85,52 @@ public class MainController {
                 incorrectdate.getAndIncrement();
             }
             else {
+                if (element.getYear() >= maxdate[2]) {
+                    if (element.getYear() > maxdate[2]) {
+                        maxdate[0] = element.getDate();
+                        maxdate[1] = element.getMonth();
+                        maxdate[2] = element.getYear();
+                    }
+                    if (element.getYear() == maxdate[2]) {
+                        if (element.getMonth() >= maxdate[1]) {
+                            if (element.getMonth() > maxdate[1]) {
+                                maxdate[1] = element.getMonth();
+                                maxdate[0] = element.getDate();
+                            }
+                            if (element.getMonth() == maxdate[1]) {
+                                if (element.getDate() >= maxdate[0]) {
+                                    if (element.getDate() > maxdate[0]) {
+                                        maxdate[0] = element.getDate();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (element.getYear() <= mindate[2]) {
+                    if (element.getYear() < mindate[2]) {
+                        mindate[0] = element.getDate();
+                        mindate[1] = element.getMonth();
+                        mindate[2] = element.getYear();
+                    }
+                    if (element.getYear() == mindate[2]) {
+                        if (element.getMonth() <= mindate[1]) {
+                            if (element.getMonth() < mindate[1]) {
+                                mindate[1] = element.getMonth();
+                                mindate[0] = element.getDate();
+                            }
+                            if (element.getMonth() == mindate[1]) {
+                                if (element.getDate() <= mindate[0]) {
+                                    if (element.getDate() < mindate[0]) {
+                                        mindate[0] = element.getDate();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
                 res_output.add(String.format(template, element.getDate(), element.getMonth(), element.getYear(), st.Day(element)));
                 if (st.Day(element) == "Monday") days[0]++;
                 if (st.Day(element) == "Thursday") days[1]++;
@@ -111,7 +158,9 @@ public class MainController {
         int correctdate = Math.toIntExact(size - incorrectdate.get());
 
         return new ResponseEntity<>("Size:" + size + "\nCorrect values: " +  correctdate + "\nIncorrect values: "
-                + incorrectdate.get() + res_output + "\nMost popular: " + popular, HttpStatus.OK);
+                + incorrectdate.get() + res_output + "\nMost popular: " + popular + "\nMax date:  "
+                +  maxdate[0] + "." + maxdate[1] + "." + maxdate[2] + "\nMin date: "
+                +  mindate[0] + "." + mindate[1] + "." + mindate[2], HttpStatus.OK);
     }
 
 }
