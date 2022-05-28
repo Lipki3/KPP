@@ -15,5 +15,11 @@ public class DataClass {
         public int getMonth() {
              return iMonth;
         }
+        public int getYear() {
+        return iYear;
+    }
+        public int getDate() {
+        return iDate;
+    }
 
 }

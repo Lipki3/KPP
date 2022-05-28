@@ -70,4 +70,45 @@ public class Statistics {
         return january;
     }
 
+    static public String Day(DataClass el) {
+       String result = "";
+        int N1, N2, N3, k;
+        if (el.getMonth() < 3) {
+            // If January or February, adjust Month and Year
+            int N4 = el.getMonth() + 12; // iMonth
+            int N5 = el.getYear() - 1; // iYear
+            N1 = (26 * (N4 + 1)) / 10;    // Month Shift
+            N2 = (125 * N5 / 100);         // Leap Correction
+
+            N3 = el.getDate() + N1 + N2 - (N5 / 100) + (N5 / 400) - 1;
+            k = 0;
+            k = N3 % 7;
+        } else {
+
+            N1 = (26 * (el.getMonth() + 1)) / 10;    // Month Shift
+            N2 = (125 * el.getYear() / 100);         // Leap Correction
+
+            N3 = el.getDate() + N1 + N2 - (el.getYear() / 100) + (el.getYear() / 400) - 1;
+
+            k = 0;
+            k = N3 % 7;
+        }
+        if (k == 1) result = "Monday";
+        if (k == 2) result =  "Tuesday";
+        if (k == 3) result =  "Wednesday";
+        if (k == 4) result =  "Thursday";
+        if (k == 5) result =  "Friday";
+        if (k == 6) result =  "Saturday";
+        if (k == 0) result =  "Sunday";
+
+        return result;
+    }
+
+    public long calcSize(List<DataClass> resList){
+        long size =0;
+        if(!resList.isEmpty()){
+            size = resList.stream().count();
+        }
+        return size;
+    }
 }

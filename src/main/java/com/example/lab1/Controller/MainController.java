@@ -68,17 +68,41 @@ public class MainController {
     }
 
 
-    private static final String template = "January: %d,  December: %d";
+    private static final String template = "\nDate: %d.%d.%d, Day: %s";
 
     @PostMapping("/stats")
     public ResponseEntity<?> EnterStream(@Valid @RequestBody List<DataClass> bodyList){
         Statistics st = new Statistics();
         List<String> res_output = new ArrayList<>();
         NumberOfRequests.IncremetNumber();
+        int[] days = {0,0,0,0,0,0,0}; String popular = ""; int max = 0;
+         //res_output.add(String.format(template, st.findJanuary(bodyList), st.findDecember(bodyList)));
+        bodyList.forEach((element)->{
+            res_output.add(String.format(template, element.getDate(), element.getMonth(), element.getYear(), st.Day(element)));
+            if (st.Day(element) == "Monday") days[0]++;
+            if (st.Day(element) == "Thursday") days[1]++;
+            if (st.Day(element) == "Wednesday") days[2]++;
+            if (st.Day(element) == "Thursday") days[3]++;
+            if (st.Day(element) == "Friday") days[4]++;
+            if (st.Day(element) == "Saturday") days[5]++;
+            if (st.Day(element) == "Sunday") days[6]++;
+        });
+        max = 0;
+        for (int i = 0; i<6; i++){
+            if (days[i+1] > days[i]) max = i+1;
+        }
 
-        res_output.add(String.format(template, st.findJanuary(bodyList), st.findDecember(bodyList)));
+        if (max == 0) popular = "Monday";
+        if (max == 1) popular = "Thursday";
+        if (max == 2) popular = "Wednesday";
+        if (max == 3) popular = "Thursday";
+        if (max == 4) popular = "Friday";
+        if (max == 5) popular = "Saturday";
+        if (max == 6) popular = "Sunday";
 
-        return new ResponseEntity<>(res_output, HttpStatus.OK);
+        long size = st.calcSize(bodyList);
+
+        return new ResponseEntity<>("Size:" + size +"\n"+ res_output + "\nMost popular: " + popular, HttpStatus.OK);
     }
 
 }
